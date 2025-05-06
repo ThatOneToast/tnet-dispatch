@@ -1,0 +1,10 @@
+[package]
+name = "tnet-dispatch"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+iced = "0.13.1"
+serde = { version = "1.0.219", features = ["derive"] }
+thiserror = "2.0.12"
+toml = "0.8.22"
