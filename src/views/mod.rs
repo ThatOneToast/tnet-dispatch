@@ -7,6 +7,8 @@ use crate::{Dispatcher, Message};
 
 pub mod project;
 pub mod active_project;
+pub mod resizable_panel;
+pub mod resizable_split;
 
 pub fn on_boarding(_state: &Dispatcher) -> Element<Message> {
     container(column![
@@ -42,6 +44,9 @@ pub fn creating_project(state: &Dispatcher) -> Element<Message> {
 }
 
 pub fn project_selected(state: &Dispatcher) -> Element<Message> {
-    let project = &state.states.project.current_project;
     project::opened_project(state)
+}
+
+pub fn selecting_existing_project(state: &Dispatcher) -> Element<Message> {
+    project::select_existing_project(state)
 }

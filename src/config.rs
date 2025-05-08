@@ -16,6 +16,42 @@ impl Config {
         std::fs::write(&config_path, toml_string).expect("Failed to write to file.");
         Ok(())
     }
+    
+    pub fn get_data_path(&self) -> PathBuf {
+        let tnet_dispatch = PathBuf::from(env!("HOME")).join(".tnet").join("dispatch");
+        let data = tnet_dispatch.join("DATA");
+        std::fs::create_dir_all(&data).expect("Failed to create all directories.");
+        data
+    }
+    
+    pub fn get_available_projects(&self) -> Vec<String> {
+        let data_path = self.get_data_path();
+        
+        // Get all entries in the data directory
+        let entries = match std::fs::read_dir(&data_path) {
+            Ok(entries) => entries,
+            Err(e) => {
+                eprintln!("Failed to read data directory: {}", e);
+                return Vec::new();
+            }
+        };
+        
+        // Filter for directories and convert to project names
+        let mut projects = Vec::new();
+        for entry in entries {
+            if let Ok(entry) = entry {
+                if let Ok(file_type) = entry.file_type() {
+                    if file_type.is_dir() {
+                        if let Some(name) = entry.file_name().to_str() {
+                            projects.push(name.to_string());
+                        }
+                    }
+                }
+            }
+        }
+        
+        projects
+    }
 }
 
 impl Default for Config {

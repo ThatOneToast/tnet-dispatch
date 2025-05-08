@@ -1,12 +1,13 @@
 use std::path::PathBuf;
 
-use crate::{DispatchError, config::Config, states::StateValues};
+use crate::{config::Config, states::StateValues};
 
 pub enum View {
     Onboarding1,
     ProjectSelected,
     NoProjectSelected,
     CreatingProject,
+    SelectingExistingProject,
 }
 
 #[derive(Clone, Debug)]
@@ -19,6 +20,13 @@ pub enum Message {
     NewProjectNameChanged(String),
     ConfirmNewProject,
     CancelNewProject,
+    // Project selection dropdown messages
+    LoadExistingProjects,
+    ExistingProjectsLoaded(Vec<String>),
+    SelectExistingProject(String),
+    ToggleProjectDropdown, 
+    ConfirmSelectedProject,
+    CancelProjectSelection,
     // Panel resize messages
     ResizeHorizontal(f32),  // For horizontal split between left and right
     ResizeVertical(f32),    // For vertical split between top and bottom
